@@ -18,6 +18,7 @@ venv/
 # ...sauf les deux que l'on veut vraiment versionner
 !neo4j_huts/huts.csv
 !neo4j_huts/huts_edges.csv
+!neo4j_huts/huts_edges_ors_max35.csv
 
 # Dumps Overpass JSON (données brutes)
 overpass_*.json
