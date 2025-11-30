@@ -1,0 +1,26 @@
+[out:json][timeout:180];
+
+// Zone "Norway"
+{{geocodeArea:Norway}}->.no;
+
+(
+  // 1) Huts "classiques" DNT & co, capacity >= 5 (ou capacité inconnue)
+  nwr
+    ["tourism"~"^(alpine_hut|wilderness_hut|hut|chalet)$"]
+    ["name"]
+    ["name"!="Katterat fjellstue"]
+    ["capacity"!~"^[0-4]$"]
+    ["capacity:persons"!~"^[0-4]$"]
+    (area.no)(66.56,5,72,32);
+
+  // 2) Hébergements DNT tagués hotel/hostel/guest_house, capacity >= 5
+  nwr
+    ["tourism"~"^(hotel|hostel|guest_house)$"]
+    ["operator"~"DNT"]
+    ["name"]
+    ["name"!="Katterat fjellstue"]
+    ["capacity"!~"^[0-4]$"]
+    ["capacity:persons"!~"^[0-4]$"]
+    (area.no)(66.56,5,72,32);
+);
+out center;

@@ -1,0 +1,22 @@
+[out:json][timeout:300];
+
+// Zone Suède + Norvège (on reste au nord avec la bbox)
+{{geocodeArea:Sweden}}->.se;
+{{geocodeArea:Norway}}->.no;
+
+(
+  // Relations d'itinéraires de rando / ski en Laponie
+  relation
+    ["route"~"^(hiking|ski)$"]
+    (area.se)
+    (66.56,5,72,32);
+
+  relation
+    ["route"~"^(hiking|ski)$"]
+    (area.no)
+    (66.56,5,72,32);
+);
+
+// On récupère toutes les ways + nodes membres de ces relations
+(._;>;);
+out body;

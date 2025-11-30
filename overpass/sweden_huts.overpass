@@ -1,0 +1,26 @@
+[out:json][timeout:180];
+
+// Définir la zone "Sweden"
+{{geocodeArea:Sweden}}->.se;
+
+(
+  // 1) toutes les alpine_hut NOMMÉES au nord de la Suède,
+  //    SAUF Abiskojåkka Fjällstuga
+  nwr
+    ["tourism"="alpine_hut"]
+    ["name"]
+    ["name"!="Abiskojåkka Fjällstuga"]
+    (area.se)(66.56,5,72,32);
+
+  // 2) + l'hôtel STF Abisko Turiststation (node/way/relation)
+  nwr
+    ["name"~"STF Abisko Turiststation"]
+    (area.se)(66.56,5,72,32);
+
+  // 3) + hôtels / hostels / guest_house à Riksgränsen
+  nwr
+    ["tourism"~"^(hotel|hostel|guest_house)$"]
+    ["name"~"Riksgr(a|ä)nsen"]
+    (area.se)(66.56,5,72,32);
+);
+out center;
