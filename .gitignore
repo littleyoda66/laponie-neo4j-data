@@ -1,0 +1,28 @@
+# --- Python ---
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.log
+
+# Virtualenv / env locaux
+.venv/
+env/
+venv/
+*.env
+
+# --- Données volumineuses ---
+
+# Par défaut, on ignore tous les CSV...
+*.csv
+# ...sauf les deux que l'on veut vraiment versionner
+!neo4j_huts/huts.csv
+!neo4j_huts/huts_edges.csv
+
+# Dumps Overpass JSON (données brutes)
+overpass_*.json
+*.osm
+*.pbf
+
+# Dossier local de données si tu en crées un
+data/
