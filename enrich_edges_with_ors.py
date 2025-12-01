@@ -11,18 +11,18 @@ import requests
 # CONFIG
 # -------------------------------------------------------------------
 
-# On lit la clé ORS dans la variable d'environnement ORS_API_KEY
+# Clé ORS dans les variables d'environnement
 ORS_API_KEY = os.environ.get("ORS_API_KEY")
 if not ORS_API_KEY:
     raise RuntimeError(
         "Variable d'environnement ORS_API_KEY non définie. "
-        "Définis-la dans les paramètres système (ou dans la session) avant de lancer le script."
+        "Définis-la dans les paramètres système ou dans la session avant de lancer le script."
     )
 
-# Profil "rando" d'OpenRouteService
+# Profil rando à pied
 ORS_URL = "https://api.openrouteservice.org/v2/directions/foot-hiking"
 
-# Répertoire racine du repo (ce fichier est à la racine)
+# Répertoire racine du repo
 BASE_DIR = Path(__file__).resolve().parent
 
 # Fichiers d'entrée/sortie
@@ -30,7 +30,7 @@ HUTS_CSV = BASE_DIR / "neo4j_huts" / "huts.csv"
 EDGES_IN_CSV = BASE_DIR / "neo4j_huts" / "huts_edges.csv"
 EDGES_OUT_CSV = BASE_DIR / "neo4j_huts" / "huts_edges_ors.csv"
 
-# Pause entre requêtes pour respecter le quota ORS
+# Pause entre requêtes ORS (free tier)
 SLEEP_BETWEEN_CALLS = 2.0  # secondes
 
 
@@ -74,7 +74,7 @@ def call_ors(hut_a, hut_b):
     """
     hut_a / hut_b : dict avec lat, lon, name
     Retourne (distance_km, dplus_m, dminus_m) ou None en cas d'erreur.
-    Gère les deux formats de réponse ORS :
+    Gère les deux formats possibles de réponse ORS :
       - GeoJSON: { "features": [ { "properties": { "summary": ... } } ] }
       - JSON:    { "routes":   [ { "summary": ... } ] }
     """
@@ -97,7 +97,6 @@ def call_ors(hut_a, hut_b):
         print(f"  ERREUR réseau ORS pour {hut_a['name']} -> {hut_b['name']}: {e}")
         return None
 
-    # Gestion simple des erreurs HTTP
     if resp.status_code != 200:
         print(f"  ERREUR ORS {resp.status_code} pour {hut_a['name']} -> {hut_b['name']}")
         try:
@@ -106,7 +105,6 @@ def call_ors(hut_a, hut_b):
             pass
         return None
 
-    # Parsing JSON
     try:
         data = resp.json()
     except Exception as e:
@@ -168,8 +166,8 @@ def call_ors(hut_a, hut_b):
 
     distance_km = distance_m / 1_000.0
     return distance_km, ascent, descent
-    
-    
+
+
 # -------------------------------------------------------------------
 # Programme principal
 # -------------------------------------------------------------------
@@ -200,7 +198,6 @@ def main():
 
             result = call_ors(hut_a, hut_b)
             if result is None:
-                # Si ORS ne trouve pas de route ou erreur → on écrit des valeurs vides
                 distance_km = None
                 dplus_m = None
                 dminus_m = None
