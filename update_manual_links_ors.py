@@ -31,7 +31,6 @@ MANUAL_EDGES = [
     ("STF Abisko Turiststation", "Låktatjåkkastugan"),
     ("Vaisaluokta Fjällstuga", "Akka Fjällstuga"),
     ("Vaisaluokta Fjällstuga", "Kutjaure Fjällstuga"),
-    # À ajuster selon le nom exact dans huts.csv :
     ("Tarfala", "Kebnekaise Restaurant"),
     ("Tarfala", "Singi Fjällstuga"),
 ]
